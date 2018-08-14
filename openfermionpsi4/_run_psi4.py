@@ -21,7 +21,7 @@ import os
 import re
 import subprocess
 import warnings
-
+from shutil import which
 
 def create_geometry_string(geometry):
     """This function converts MolecularData geometry to psi4 geometry.
@@ -206,7 +206,9 @@ def run_psi4(molecule,
     # Run psi4.
     output_file = molecule.filename + '.out'
     try:
-        process = subprocess.Popen(['psi4', input_file, output_file])
+        psi4_path = which('psi4')
+        print(" Path to psi4:", psi4_path)
+        process = subprocess.Popen(['python', psi4_path, input_file, output_file])
         process.wait()
     except:
         print('Psi4 calculation for {} has failed.'.format(molecule.name))
